@@ -1,125 +1,360 @@
+import 'dart:math';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return GetMaterialApp(
+      // Remove the debug banner
+      debugShowCheckedModeBanner: false,
+      title: 'DBestech',
+      theme: ThemeData(primarySwatch: Colors.deepOrange),
+      home: HomePage(),
+      //Using getX for RouteName to Navigate
+      getPages: [
+        GetPage(name: '/course-page', page: ()=> PageThree()),
+        //Passing the RouteNAme with data
+        GetPage(name: '/more-page/:data', page: () => PageFour())
+
+      ],
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+// Home Screen
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: Container(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(40),
+                  ),
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.grey.shade900,
+                      Colors.grey.shade600,
+                      Colors.grey.shade900
+                    ],
+                  )),
+              child: Center(
+                child: Text(
+                  "GetX",
+                  style: TextStyle(fontSize: 50, color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Center(
+                child: Container(
+                    width: MediaQuery.of(context).size.width - 20,
+                    padding: EdgeInsets.all(10.0),
+                    child: TextField(
+                      autocorrect: true,
+                      decoration: InputDecoration(
+                        hintText: 'Search GetX..',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        filled: true,
+                        fillColor: Colors.white70,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                          borderSide: BorderSide(color: Colors.grey, width: 2),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                          borderSide: BorderSide(color: Colors.grey.shade100),
+                        ),
+                      ),
+                    ))),
+            SizedBox(
+              height: 50,
+            ),
+            //GetX start from here
+            RichText(
+                text: TextSpan(
+                    text: 'First GetX',
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => Get.to(() => PageOne()),
+                    style:
+                        TextStyle(color: Colors.grey.shade600, fontSize: 30))),
+            SizedBox(
+              height: 10,
+            ),
+            //Explore GetX
+            RichText(
+                text: TextSpan(
+                    text: 'Explore GetX',
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => Get.to(() => PageTwo(), arguments: {
+                            //Generating Key pair value of random numbers
+                            'price': Random().nextInt(10000).toString(),
+                            //Passing multiple arguments
+                            'text': 'The course price is USD',
+                          }),
+                    style:
+                        TextStyle(color: Colors.grey.shade600, fontSize: 30))),
+            SizedBox(
+              height: 50,
+            ),
+            Divider(),
+            SizedBox(
+              height: 30,
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              'Navigate named routes',
+              style: TextStyle(fontSize: 30),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            //last two routes/bottons
+            Expanded(
+                child: Container(
+              height: 300,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                ),
+                gradient: LinearGradient(
+                    colors: [Colors.grey, Colors.black, Colors.grey]),
+              ),
+              child: Container(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        width: 200,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: Colors.grey.shade300,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                            //Passing the route name for clickable function
+                          onPressed: () => Get.toNamed('/course-page',
+                          arguments: {
+                            'price':Random().nextInt(10000).toString()
+                          }),
+                          child: Text(
+                            "Course",
+                            style: TextStyle(
+                                fontSize: 20, color: Colors.grey.shade900),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                        child: Container(
+                      width: 200,
+                      height: 70,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Color(0xFffbc33e)),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.grey.shade300,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        onPressed: () => Get.toNamed('/more-page/${Random().nextInt(10000)}'),
+                        child: Text(
+                          "More",
+                          style: TextStyle(
+                              fontSize: 20, color: Colors.grey.shade900),
+                        ),
+                      ),
+                    ))
+                  ],
+                ),
+              ),
+            ))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Page One
+class PageOne extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+          width: 200,
+          height: 70,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Color(0xFffbc33e)),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Colors.grey.shade300,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            onPressed: () => Get
+                .back(), //instead Get.off(()=> HomePage()),  Alternative way to got to specific page
+            child: Text(
+              "Home",
+              style: TextStyle(fontSize: 20, color: Colors.grey.shade900),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Page Two
+class PageTwo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Page One'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.grey.shade900, //change your color here
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            Text(Get.arguments['text'] ?? 'Nothing to show',
+            style: TextStyle(fontSize: 30,color: Colors.grey.shade600),),
+            Text(Get.arguments['price'] ?? 'Exploration Page',
+              style: TextStyle(fontSize: 26,color: Colors.grey.shade600),),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Page Three
+class PageThree extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.black26),
+        title: Text(
+          'Course Page',
+          style: TextStyle(fontSize: 30, color: Colors.grey),
+        ),
+      ),
+      body: Center(
+        child: Text(
+          "Course price is USD "+ Get.arguments['price']??'0.00',
+          style: TextStyle(fontSize: 30, color: Colors.grey.shade600),
+        ),
+      ),
+    );
+  }
+}
+
+// Page Four
+class PageFour extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.black26,
+        ),
+        title: Text('Page Four'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+              ),
+              onPressed: () => Get.to(()=> PageFive()),
+              child: Text(
+                "Get to ",
+                style: TextStyle(fontSize: 40, color: Colors.grey),
+              ),
+            ),
+            Divider(),
+            Text(
+              'Page Four '+Get.parameters['data']! ?? "Nothing", //data passign via routes you have to call it from parameter not from arguments,
+              style: TextStyle(fontSize: 30),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class PageFive extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Page Five"),
+      ),
+      body: Center(
+          child: Container(
+        width: 200,
+        height: 70,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20), color: Color(0xFffbc33e)),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            elevation: 0,
+            backgroundColor: Colors.grey.shade300,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+          onPressed: () => Get.to(()=> HomePage()),
+          child: Text(
+            "Home",
+            style: TextStyle(fontSize: 20, color: Colors.grey.shade900),
+          ),
+        ),
+      )),
     );
   }
 }
